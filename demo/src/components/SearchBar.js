@@ -53,7 +53,7 @@ const SearchBar = (props) => {
     const handleSubmit = () => {
         if (productType !== 'SEARCH') {
             onProductTypeChange('SEARCH'); 
-            history.push("/home");
+            // history.push({pathname: "/home", state: {switch:true}});
         } else {
             if(!location.hash) {
                 history.push("/home");

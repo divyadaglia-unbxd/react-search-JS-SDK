@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import UnbxdSearch from '@unbxd-ui/unbxd-search-core';
+// import UnbxdSearch from '@unbxd-ui/unbxd-search-core';
 //local filepath for js core
-// import UnbxdSearch from '../../search-JS-core/src/index';
+import UnbxdSearch from '../../search-JS-core/src/index';
 // import UnbxdSearch from '../src/core/unbxdSdk';
 
 import { AppContextProvider } from './common/context';
@@ -59,7 +59,10 @@ class UnbxdSearchWrapper extends Component {
             searchConfigurations,
             getCategoryId,
             productType,
-            priceUnit
+            priceUnit,
+            source,
+            goToLandingPage,
+            setProductType
         } = this.props;
 
         if (!UnbxdSearch.prototype.getStateString) {
@@ -122,15 +125,12 @@ class UnbxdSearchWrapper extends Component {
         this.initialResultLoad = true;
     }
 
-    componentDidMount() {
-        /** To set category page in local */
-        // window.UnbxdAnalyticsConf = {};
-        // window.UnbxdAnalyticsConf['page'] = 'itemGroupIds:1800';
-        // window.UnbxdAnalyticsConf['page_type'] = 'BOOLEAN';
+    componentDidMount() {   
         const { unbxdCore } = this.state;
         const urlParams = unbxdCore.getQueryParams() || {};
         const {
-            onUrlBack
+            onUrlBack,
+            source
         } = this.props;
         const { trackCategory } = this.getAnalytics();
         const categoryId =
@@ -187,7 +187,7 @@ class UnbxdSearchWrapper extends Component {
             productType,
             onRouteChange,
             searchConfigurations,
-            refreshId
+            refreshId,
         } = this.props;
         const { unbxdCore, categoryId } = this.state;
         const { trackCategory } = this.getAnalytics();
@@ -214,7 +214,7 @@ class UnbxdSearchWrapper extends Component {
                 };
             });
             unbxdCore.options.productType = productTypes.CATEGORY;
-            if (categoryId.length === 0 && Object.keys(urlParams).length) {
+            if (categoryId.length >= 0 && Object.keys(urlParams).length) {
                 renderFromUrl();
             } else {
                 this.resetSearch();
@@ -230,7 +230,7 @@ class UnbxdSearchWrapper extends Component {
             }
             if (urlParamsState) {
                 renderFromUrl();
-            }
+            } 
         }  else if (refreshId !== prevProps.refreshId) {
             this.resetSearch();
             if (typeof onRouteChange === "function") {
@@ -239,7 +239,9 @@ class UnbxdSearchWrapper extends Component {
                     const currentQuery =
                         urlParams[unbxdCore.options.searchQueryParam];
                     if (productType === productTypes.SEARCH) {
-                        getResults(currentQuery);
+                        if(currentQuery) {
+                            getResults(currentQuery);
+                        } 
                     } else {
                         getResults();
                     }
@@ -249,7 +251,22 @@ class UnbxdSearchWrapper extends Component {
                 const currentQuery =
                     urlParams[unbxdCore.options.searchQueryParam];
                 if (productType === productTypes.SEARCH) {
-                    getResults(currentQuery);
+                        if(currentQuery) {
+                            if(Object.keys(urlParams).length) {
+                                renderFromUrl();
+                            } else {
+                                getResults();
+                            }
+                            // getResults(currentQuery);
+                        } else {
+                            /** Redirection done via history manipulations, 
+                             * but reload is required
+                             * Use Case: Back To Landing Page
+                             */
+                            debugger;
+                            window.history.go();
+                        }
+                    
                 } else {
                     getResults();
                 }
@@ -266,7 +283,8 @@ class UnbxdSearchWrapper extends Component {
             unbxdState,
             helpers,
             priceUnit,
-            productType
+            productType,
+            goToLandingPage
         } = this.state;
         return {
             unbxdCore,
@@ -274,6 +292,7 @@ class UnbxdSearchWrapper extends Component {
             unbxdState,
             helpers,
             priceUnit,
+            goToLandingPage,
             productType
         };
     }

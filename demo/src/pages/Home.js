@@ -23,7 +23,7 @@ const Home = (props) => {
 
     useEffect(() => {
         setProductType("SEARCH");
-        setRefreshId(Math.random());
+        //setRefreshId(Math.random());
     }, []);
 
     return (

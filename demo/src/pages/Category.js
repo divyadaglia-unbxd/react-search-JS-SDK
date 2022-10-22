@@ -110,6 +110,10 @@ const Category = (props) => {
         }
     };
 
+    const onRouteChange = (searchObj, hash, refreshId, that) => {
+        debugger;
+    }
+
 
     return (
         <UnbxdSearchWrapper
@@ -117,14 +121,14 @@ const Category = (props) => {
         apiKey="e2082aeb3a7f0ac8955c879daf7673e8"
             getCategoryId={getCategoryId}
             searchConfigurations={configs}
-            productType={productType}
+            productType={"CATEGORY"}
             source="category"
             refreshId={refreshId}
             setRefreshId={setRefreshId}
             allowExternalUrlParams={true}
             loaderComponent={<LoaderComponent />}
             errorComponent={<ErrorComponent />}
-            // onRouteChange={handleRouteChange}
+            onRouteChange={onRouteChange}
             // onUrlBack = {
             //     function() {
             //         this.state.unbxdCore.state.isBack = true;

@@ -95,6 +95,10 @@ const Search = (props) => {
             return true;
         }
     };
+    
+    const onRouteChange = (searchObj, hash, refreshId, that) => {
+        debugger;
+    }
 
     return (
         <UnbxdSearchWrapper
@@ -102,13 +106,14 @@ const Search = (props) => {
         apiKey="e2082aeb3a7f0ac8955c879daf7673e8"
             getCategoryId={getCategoryId}
             searchConfigurations={configs}
-            productType={productType}
+            productType={"SEARCH"}
             refreshId={refreshId}
             setRefreshId={setRefreshId}
             allowExternalUrlParams={true}
             loaderComponent={<LoaderComponent />}
             errorComponent={<ErrorComponent />}
             source="search"
+            onRouteChange={onRouteChange}
             // onRouteChange={handleRouteChange}
             // onUrlBack = {
             //     function() {
@@ -129,9 +134,9 @@ const Search = (props) => {
             <button type="button" onClick={handleChange}>
                 change
             </button>
-            {/* <Route exact path="/home"> */}
+            <Route exact path="/home">
                 <Home setRefreshId={setRefreshId} refreshId={refreshId} />
-            {/* </Route> */}
+            </Route>
             {/* <Route exact path="/strings">
                 <Strings />
             </Route>

@@ -76,9 +76,10 @@ class SearchBoxContainer extends React.PureComponent {
         // dont call search if the query is empty.
 
         if (onSubmit) {
-            if (onSubmit(query) && query.length) {
+            if (query.length) {
                 resetSearch();
                 setSearchBoxConfiguration({ query: queryString });
+                onSubmit(query);
                 // track for search hit here
                 trackSearch(query);
             }

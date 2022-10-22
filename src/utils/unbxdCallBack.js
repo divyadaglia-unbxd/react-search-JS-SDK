@@ -10,7 +10,7 @@ function unbxdCallBack(unbxdSearchObj, eventName, data) {
         const { onRouteChange } = this.props;
         if (typeof onRouteChange === 'function') {
             let urlStr = unbxdSearchObj.getStateString();
-            onRouteChange(unbxdSearchObj, urlStr);
+            onRouteChange(unbxdSearchObj, urlStr, this);
         }
     }
 
