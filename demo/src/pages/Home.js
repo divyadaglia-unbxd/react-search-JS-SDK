@@ -20,13 +20,12 @@ import { ProductTypeContext } from '../context';
 const Home = (props) => {
     const { setRefreshId } = props;
     const { productType, setProductType } = useContext(ProductTypeContext);
+
     useEffect(() => {
-        if (productType === 'CATEGORY') {
-            window.UnbxdAnalyticsConf = {};
-            setProductType('SEARCH');
-            setRefreshId(Math.random);
-        }
+        setProductType("SEARCH");
+        setRefreshId(Math.random());
     }, []);
+
     return (
         <main className="UNX-search__container">
             <div className="UNX-searchMeta__container">
@@ -38,10 +37,12 @@ const Home = (props) => {
             </div>
             <div className="UNX-searchResults__container">
                 <div className="UNX-searchFacet__container">
-                    <MultilevelFilters />
+                    
                     {/* <FacetApplyClear /> */}
-                    <RangeFilters />
+                    
                     <TextFilters />
+                    <RangeFilters />
+                    <MultilevelFilters />
                     {/* <CombinedFilters /> */}
                     {/* <FacetApplyClear /> */}
                 </div>

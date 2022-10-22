@@ -38,8 +38,8 @@ const Accessories = () => {
                 <div className="UNX-searchFacet__container">
                     <MultilevelFilters />
                     {/* <FacetApplyClear /> */}
-                    <RangeFilters />
                     <TextFilters />
+                    <RangeFilters />
                     {/* <CombinedFilters/> */}
                     {/* <FacetApplyClear /> */}
                 </div>

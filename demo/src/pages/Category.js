@@ -1,9 +1,8 @@
-import React, { useState, useContext, useLayoutEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Route, useHistory, useLocation } from 'react-router-dom';
 
 
 import UnbxdSearchWrapper from '../../../src/index';
-import UnbxdSearch from '../../../../search-JS-core/src/index';
 
 import Strings from './Strings';
 import Balls from './Balls';
@@ -18,7 +17,9 @@ import { scrollTop } from '../utils';
 import { useEffect } from 'react';
 
 export const getCategoryId = () => {
-    return "";
+    if (window.UnbxdAnalyticsConf && window.UnbxdAnalyticsConf['page']) {
+        return encodeURIComponent(window.UnbxdAnalyticsConf['page']);
+    }
 };
 
 export const LoaderComponent = () => {
@@ -37,9 +38,10 @@ export const ErrorComponent = () => {
     return <div>Something went wrong.</div>;
 };
 
-const Search = (props) => {
+const Category = (props) => {
+    const { refreshId, setRefreshId } = props;
     const { productType, setProductType } = useContext(ProductTypeContext);
-    const {refreshId, setRefreshId} = props;
+    
     const [showFilters, setShowFilters] = useState(false);
     const [configs, setConfigs] = useState(searchConfigurations);
     const routeHistory = useHistory();
@@ -48,14 +50,26 @@ const Search = (props) => {
     const handleClose = () => setShowFilters(false);
     const handleShow = () => setShowFilters(true);
 
-    window.UnbxdAnalyticsConf = {};
-
     const handleChange = () => {
         setConfigs({
             ...searchConfigurations,
             defaultFilters: { flag: 'article' }
         });
     };
+
+    if(location.href.indexOf("strings") > -1) {
+        window.UnbxdAnalyticsConf = {};
+    window.UnbxdAnalyticsConf['page'] = 'itemGroupIds:1800';
+    window.UnbxdAnalyticsConf['page_type'] = 'BOOLEAN';
+    // setProductType("CATEGORY");
+    
+    } else if (location.href.indexOf("accessories") > -1) {
+        window.UnbxdAnalyticsConf = {};
+        window.UnbxdAnalyticsConf['page'] = 'itemGroupIds:185';
+        window.UnbxdAnalyticsConf['page_type'] = 'BOOLEAN';
+        // setProductType("CATEGORY");
+       
+    } 
 
     const handleRouteChange = (searchObj, hash, refreshId) => {
         scrollTop();
@@ -96,6 +110,7 @@ const Search = (props) => {
         }
     };
 
+
     return (
         <UnbxdSearchWrapper
         siteKey="ss-unbxd-gcp-Gardner-White-STG8241646781056"
@@ -103,12 +118,12 @@ const Search = (props) => {
             getCategoryId={getCategoryId}
             searchConfigurations={configs}
             productType={productType}
+            source="category"
             refreshId={refreshId}
             setRefreshId={setRefreshId}
             allowExternalUrlParams={true}
             loaderComponent={<LoaderComponent />}
             errorComponent={<ErrorComponent />}
-            source="search"
             // onRouteChange={handleRouteChange}
             // onUrlBack = {
             //     function() {
@@ -123,29 +138,29 @@ const Search = (props) => {
                 productType={productType}
                 handleShow={handleShow}
                 refreshId={refreshId}
-                source="search"
+                source="category"
                 setRefreshId={setRefreshId}
             />
             <button type="button" onClick={handleChange}>
                 change
             </button>
-            {/* <Route exact path="/home"> */}
-                <Home setRefreshId={setRefreshId} refreshId={refreshId} />
-            {/* </Route> */}
-            {/* <Route exact path="/strings">
+            {/* <Route exact path="/">
+                <Home setRefreshId={setRefreshId} />
+            </Route> */}
+            <Route exact path="/strings">
                 <Strings />
             </Route>
-            <Route exact path="/balls">
+            {/* <Route exact path="/balls">
                 <Balls />
-            </Route>
+            </Route> */}
             <Route exact path="/accessories">
                 <Accessories />
             </Route>
-            <Route path="/grips">
+            {/* <Route path="/grips">
                 <Grips />
             </Route> */}
         </UnbxdSearchWrapper>
     );
 };
 
-export default Search;
+export default Category;

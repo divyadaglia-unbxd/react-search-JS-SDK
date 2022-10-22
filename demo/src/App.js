@@ -9,10 +9,12 @@ import '@unbxd-ui/react-search-sdk/public/dist/css/core.css';
 import '@unbxd-ui/react-search-sdk/public/dist/css/theme.css';
 // import '@unbxd-ui/react-search-sdk/public/dist/css/ie.css';
 import '../public/css/index.scss';
+import Category from './pages/Category';
 
 const AppRoutes = () => {
     const [productType, setProductType] = useState('SEARCH');
     const [enableFilters, setEnableFilters] = useState(true);
+    const [refreshId, setRefreshId] = useState(1);
 
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
@@ -30,12 +32,18 @@ const AppRoutes = () => {
                     }}
                 >
                     <Switch>
-                        <Route path="/">
-                            <Search />
+                        <Route exact path="/strings">
+                            <Category refreshId={refreshId} setRefreshId={setRefreshId} />
                         </Route>
-                        <Route exact path="/landing">
+                        <Route exact path="/accessories">
+                            <Category refreshId={refreshId} setRefreshId={setRefreshId} />
+                        </Route>
+                        <Route exact path="/home">
+                            <Search refreshId={refreshId} setRefreshId={setRefreshId}/>
+                        </Route>
+                        {/* <Route exact path="/landing">
                             <Landing />
-                        </Route>
+                        </Route> */}
                     </Switch>
                 </ProductTypeContext.Provider>
             </Router>

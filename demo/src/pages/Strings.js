@@ -36,10 +36,11 @@ const Strings = () => {
             </div>
             <div className="UNX-searchResults__container">
                 <div className="UNX-searchFacet__container">
+                <TextFilters />
                     <MultilevelFilters />
                     {/* <FacetApplyClear /> */}
                     <RangeFilters />
-                    <TextFilters />
+                    
                     {/* <CombinedFilters/> */}
                     {/* <FacetApplyClear /> */}
                 </div>

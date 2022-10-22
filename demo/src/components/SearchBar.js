@@ -44,16 +44,22 @@ const SearchBar = (props) => {
         productType,
         handleShow,
         refreshId,
-        setRefreshId
+        setRefreshId,
+        source
     } = props;
     const [categoryPathLinks, setCategoryPathLinks] = useState(categoryLinks);
     const { enableFilters, setEnableFilters } = useContext(ProductTypeContext);
     const history = useHistory();
     const handleSubmit = () => {
         if (productType !== 'SEARCH') {
-            onProductTypeChange('SEARCH');
-            history.push('/');
+            onProductTypeChange('SEARCH'); 
+            history.push("/home");
+        } else {
+            if(!location.hash) {
+                history.push("/home");
+            }
         }
+    
         if (!enableFilters) {
             setEnableFilters(true);
         }
@@ -71,10 +77,10 @@ const SearchBar = (props) => {
             return { ...links, isSelected: false };
         });
         setCategoryPathLinks(updatedPathLinks);
-        // window.UnbxdAnalyticsConf = {};
+        window.UnbxdAnalyticsConf = {};
         // window.UnbxdAnalyticsConf['page'] = "itemGroupIds:1800"
-        // window.UnbxdAnalyticsConf['page'] = currentCategoryItem.path;
-        // window.UnbxdAnalyticsConf['page_type'] = 'BOOLEAN';
+        window.UnbxdAnalyticsConf['page'] = currentCategoryItem.path;
+        window.UnbxdAnalyticsConf['page_type'] = 'BOOLEAN';
         onProductTypeChange('CATEGORY');
         setRefreshId(refreshId + 1);
     };
